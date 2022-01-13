@@ -3,6 +3,9 @@ package com.griffin.functional;
 import java.util.ArrayList;
 import java.util.List;
 
+//
+// This code was copied from a course example and modified here.
+//
 public class EventOrganizer {
 
     public static void main(String [] args) {
@@ -139,11 +142,13 @@ public class EventOrganizer {
     }
     public static class EventDispatcher {
 
-        private List<Event> eventList = new ArrayList<Event>();
+        // Store the dispatched events in the static class's List objects.
 
-        private List<EventProcess> eventProcessList = new ArrayList<EventProcess>();
+        private List<Event> eventList = new ArrayList<>();
 
-        private List<EventResult> eventResultList = new ArrayList<EventResult>();
+        private List<EventProcess> eventProcessList = new ArrayList<>();
+
+        private List<EventResult> eventResultList = new ArrayList<>();
 
         public void registerEventHandler(Event event) {
 
@@ -163,6 +168,8 @@ public class EventOrganizer {
 
         }
 
+        // Iterate over the list, calling the SAM implementation.
+
         public void dispatchEvent() {
 
             for (Event event : eventList) {
@@ -172,6 +179,8 @@ public class EventOrganizer {
             }
 
         }
+
+        // Iterate over the list, calling the SAM implementation.
 
         public void processEvents() {
 
@@ -185,7 +194,7 @@ public class EventOrganizer {
 
         }
 
-
+        // Iterate over the list, calling the SAM implementation.
 
         public void compute() {
 
@@ -209,7 +218,10 @@ public class EventOrganizer {
 
         //    EventDispatcher eventDispatcher = new EventDispatcher();
 
-            // define no- argument functional interface
+            // Define no-argument functional interface
+            // Event is a functional i/f whose SAM takes no args and returns void.
+            // The Event i/f instance event1 is implemented here by simply supplying a Lambda expression
+            // taking no args and returning void.
 
             Event event1 = () -> System.out.println("event 1 occurred : no argument syntax");
 
@@ -217,19 +229,20 @@ public class EventOrganizer {
 
 
 
-            // define single- argument method of functional interface
+            // Define single- argument method of functional interface
+            // EventProcess is a functional i/f whose SAM takes one arg and returns void.
+            // The EventProcess i/f instance process1 is implemented here by simply supplying a Lambda expression
+            // taking one arg and returning void.
+            // Note that the single arg var name can be defined here in the impl (ie. can be i, j, jj, etc.)
 
-            EventProcess process1 = (i) -> System.out.println("event processed : one argument syntax : "+i);
+            EventProcess process1 = (jj) -> System.out.println("event processed : one argument syntax : "+ jj);
 
-            // define alternative single- argument method of functional interface. alternative
+            // Use alternative syntax to define the Lambda. Alternative syntax is omitting parentheses.
 
-            // syntax of omitting parenthesies
+            EventProcess process2 = i -> System.out.println("event processed : one argument syntax : "+ i);
 
-            EventProcess process2 = i -> System.out.println("event processed : one argument syntax : "+i);
-
-            // define alternative single- argument method of functional interface. alternative
-
-            // syntax of wrapping expression body with curly braces
+            // Use alternative syntax to define the Lambda. Alternative syntax is wrapping Lambda's expression
+            // body with curly braces.
 
             EventProcess process3 = i -> {
 
@@ -237,9 +250,7 @@ public class EventOrganizer {
 
             };
 
-            // define single- argument method of functional interface which that returns
-
-            // the result
+            // Define single- argument method of functional interface which also returns a non-void result
 
             EventResult result1 = i -> { i = i + 2; return i; };
 
@@ -253,17 +264,18 @@ public class EventOrganizer {
 
 
 
-            // registering events
+            // registering events. The EventDispatcher stores the Event events.
 
             eventDispatcher.registerEventHandler(event1);
 
             eventDispatcher.registerEventHandler(event2);
 
+            // dispatchEvent() iterates over the stored events and calls its SAM method.
             eventDispatcher.dispatchEvent();
 
             System.out.println("");
 
-            // registering event processes
+            // registering event processes.  The EventDispatcher stores the EventProcess events.
 
             eventDispatcher.registerEventProcessHandler(process1);
 
@@ -271,13 +283,15 @@ public class EventOrganizer {
 
             eventDispatcher.registerEventProcessHandler(process3);
 
+            // processEvent() iterates over the stored events and calls its SAM method.
+
             eventDispatcher.processEvents();
 
             System.out.println("");
 
 
 
-            // registering result- based events
+            // registering result- based events. The EventDispatcher stores the EventResult events.
 
             eventDispatcher.registerEventResultHandler(result1);
 
@@ -288,6 +302,8 @@ public class EventOrganizer {
             eventDispatcher.registerEventResultHandler(result4);
 
             eventDispatcher.registerEventResultHandler(result5);
+
+            // compute() iterates over the stored events and calls its SAM method.
 
             eventDispatcher.compute();
 
