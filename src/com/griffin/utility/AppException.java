@@ -5,8 +5,13 @@ Application classes and methods must declare and handle.
  */
 public class AppException extends Exception {
 
-    public AppException(String message) {
+    public int appValue;  // Exception related value
+//    public AppException() {
+//    }
+
+    public AppException(String message, int value) {
         super(message);
+        this.appValue = value;
     }
 
 }
