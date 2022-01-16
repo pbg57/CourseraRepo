@@ -3,41 +3,66 @@ package com.griffin.generics.samples;
 import java.util.*;
 
 public class JdkTutorial {
-    // Write a generic method to count the number of elements in a collection that have a specific property
-    // (for example, odd integers, prime numbers, palindromes).
+    /*
+       Write generic methods to compare elements in a collection that have a specific property
+     (for example, odd integers, prime numbers, palindromes).
+     */
 
     public static void main(String[] args) {
-        ArrayList<Integer> oddList = new ArrayList<>();
-        oddList.add(1);
+
+        Integer[] intArray = new Integer[]{7, 3, 5, 8, 2};
+        String[] strArray = new String[]{"1", "2", "3", "4", "5"};
+
+/*
+Determine the number of generic List elements that are greater than an input value.
+Show for two different types: Integer and String.
+ */
+        int result = compareGeneric(intArray, 3, "isGreater");
+        System.out.println("CompareGeneric input: " + Arrays.toString(intArray) + " result: " + result);
+
+        result = compareGeneric(strArray, "2", "isGreater");
+        System.out.println("CompareGeneric input: " + Arrays.toString(strArray) + " result: " + result);
 
 
-        List<Integer> aList = Arrays.asList(1, 3);
-        Integer[] iA = new Integer[2];
-        iA[0] = 1;
-        iA[1] = 3;
+/*
+Swap the positions of two elements in  a generic List.
+Show for two different types: Integer and Float.
+ */
 
-        int result = compareGeneric(iA, 1, "isGreater");
-        System.out.println("CompareGeneric input: " + " result:" + result);
+        Integer[] intElements = new Integer[]{10, 11};
 
-//        Write a generic method to exchange the positions of two different elements in an array.
+        System.out.println("Generic exchangeElements before: " + Arrays.toString(intElements));
+        exchangeElements(intElements);
+        System.out.println("Generic exchangeElements after: " + Arrays.toString(intElements));
 
-        Integer inpElements[] = new Integer[2];
-        inpElements[0] = 10;
-        inpElements[1] = 11;
-        System.out.println("Generic exchangeElements before: " + inpElements[0].toString());
-        exchangeElements(inpElements);
-        System.out.println("Generic exchangeElements after: " + inpElements[0].toString());
+        Float[] floatElements = new Float[]{10.01f, 11.011f};
 
-//        Write a generic method to find the maximal element in the range [begin, end) of a list.
+        System.out.println("Generic exchangeElements before: " + Arrays.toString(floatElements));
+        exchangeElements(floatElements);
+        System.out.println("Generic exchangeElements after: " + Arrays.toString(floatElements));
 
-        List<Integer> intList = Arrays.asList(5,4,3,2,6);
+        // Write a generic method to find the maximal element in the range [begin, end) of a list.
+        // Show for two different types: Integer and Float.
+
+        List<Integer> intList = Arrays.asList(5, 4, 3, 2, 6);
+        List<Float> fElements  = Arrays.asList(10.01f, 11.011f, 4.2f, 0.02f, 33.3f);
+
         int begin = 1;
         int end = 3;
         Integer maxResult = findMaximumElement(intList, begin, end);
-        System.out.println("FindMaxElement input: " + intList.toString());
+        System.out.println("FindMaxElement input: " + intList);
         System.out.println("FindMaxElement begin:end: " + begin + ":" + end);
         String stringResult = (maxResult == null ? "null" : maxResult.toString());
         System.out.println("FindMaxElement output: " + stringResult);
+
+        begin = 0;
+        end = 3;
+        Float maxfResult = findMaximumElement(fElements, begin, end);
+        System.out.println("FindMaxElement input: " + fElements);
+        System.out.println("FindMaxElement begin:end: " + begin + ":" + end);
+        stringResult = (maxfResult == null ? "null" : maxfResult.toString());
+        System.out.println("FindMaxElement output: " + stringResult);
+
 
     } // End main()
 
@@ -72,18 +97,16 @@ public class JdkTutorial {
     public static <T extends Comparable<T>> T findMaximumElement(List<T> elemList, int begin, int end) {
 
         if ((elemList.size() > end) && (end > begin)) {
-            T beginElem = elemList.get(begin);
 
-            T maxElem = beginElem;
-            for (int i = begin+1; i < end; i++) {
-                if (elemList.get(i).compareTo(elemList.get(i+1)) < 0)
-                    maxElem = elemList.get(i+1);
+            T maxElem = elemList.get(begin);
+            for (int i = begin; i < end; i++) {
+                int eval = maxElem.compareTo(elemList.get(i + 1));
+                if (eval < 0)
+                    maxElem = elemList.get(i + 1);
             }
             return maxElem;
         } else
             return null;
     }
-
-    final Comparator<String> IGNORE_CASE_ORDER = String::compareToIgnoreCase;
 
 } // end class
