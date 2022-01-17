@@ -11,43 +11,27 @@ public class TestDome {
 
     void testRunner() {
 
-        MathUtils.main(null);
         /*
+        Write a method accepting two ints and computes a decimal average
+         */
+        double retVal = MathUtils.average(2, 3);
+        System.out.println("Average value: " + retVal);
 
+        /*
+        Merge two string arrays, removing duplicate names and return in string array.
          */
         String[] names1 = new String[]{"Ava", "Emma", "Olivia"};
         String[] names2 = new String[]{"Olivia", "Sophia", "Emma"};
-        System.out.println(String.join(", ", MergeNames.uniqueNames(names1, names2))); // should print Ava, Emma, Olivia, Sophia
-        /*
-         */
-
+        System.out.println(String.join(", ", MergeNames.uniqueNames(names1, names2)));
     }
-    /*
 
-     */
-
-    /*
-
-     */
-
-
-    /*
-
-     */
-    public class MathUtils {
+    public static class MathUtils {
         public static double average(int a, int b) {
             return ((double) a + (double) b) / 2;
         }
-
-        public static void main(String[] args) {
-            System.out.println(average(2, 1));
-        }
     }
 
-    /*
-
-     */
-    class AlertService {
+    static class AlertService {
         private final AlertDAO storage;
 
         public AlertService(AlertDAO alertDAO) {
@@ -65,13 +49,13 @@ public class TestDome {
 
     interface AlertDAO {
 
-        public UUID addAlert(Date time);
+        UUID addAlert(Date time);
 
-        public Date getAlert(UUID id);
+        Date getAlert(UUID id);
     }
 
-    class MapAlertDAO implements AlertDAO {
-        private final Map<UUID, Date> alerts = new HashMap<UUID, Date>();
+    static class MapAlertDAO implements AlertDAO {
+        private final Map<UUID, Date> alerts = new HashMap<>();
 
         public UUID addAlert(Date time) {
             UUID id = UUID.randomUUID();
@@ -84,27 +68,19 @@ public class TestDome {
         }
     }
 
-    /*
 
-     */
-    public class MergeNames {
+    public static class MergeNames {
 
         public static String[] uniqueNames(String[] names1, String[] names2) {
 
             // join two arrays, removing duplicate names and return in string array
-            // Use the Set class, which requires unique values, to create an intermediate container for the result
+            // Use the Set class, which requires unique values, to create an intermediate container for the result.
+            // Returns non-ordered array.
 
             Set<String> intermediateResult = new HashSet<>();
-
             intermediateResult.addAll(Arrays.asList(names1));
-
             intermediateResult.addAll(Arrays.asList(names2));
-
             return intermediateResult.toArray(new String[0]);
         }
     }
-
-    /*
-
-     */
 }

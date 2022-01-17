@@ -1,20 +1,24 @@
 package com.griffin.generics.samples;
 
-import java.util.Collection;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.LinkedList;
 
+/*
+Class to hold and manage a queue of train cars.
+ */
 public class TrainComposition {
 
+    /*
+    Deque is a Java.util double-ended queue implemented by LinkedList.
+     */
     Deque<Integer> wagonLL = new LinkedList<>();
 
     public void attachWagonFromLeft(int wagonId) {
-        wagonLL.addFirst(new Integer(wagonId));
+        wagonLL.addFirst(wagonId);
     }
 
     public void attachWagonFromRight(int wagonId) {
-        wagonLL.addLast(new Integer(wagonId));
+        wagonLL.addLast(wagonId);
     }
 
     public int detachWagonFromLeft() {

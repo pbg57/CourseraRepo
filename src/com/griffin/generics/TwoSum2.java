@@ -1,15 +1,13 @@
 package com.griffin.generics;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class TwoSum2 {
     public static int[] findTwoSum(int[] list, int sum) {
 
         for (int i = 0; i < list.length; i++) {
-            if (list[i] < sum) {
+            if (list[i] < sum) {    // skip if out of range
                 for (int j = i; j < list.length; j++)
-                    if (list[j] < sum) {
+                    if (list[j] < sum) {     // skip if out of range
                         if ((list[i] + list[j]) == sum) {
                             return new int[]{ i, j};
                         }
