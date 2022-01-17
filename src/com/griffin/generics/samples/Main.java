@@ -6,58 +6,57 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
+        /*
+        This is an example of what use of raw type means.
+         */
         System.out.println("Raw type 1");
         ArrayList list = new ArrayList(10);
         for (int i = 0; i < 10; i++) {
-            list.add(new String(Integer.toString(i)));
+            list.add(Integer.toString(i));
         }
-	// Raw type. Casting required.
+        // Raw type. Casting required.
         for (Object o : list) {
             String value = (String) o;
             System.out.println(value);
         }
 
-        // Generic type. No casting required
+        /*
+        Generic type. No casting required, as above.
+         */
         System.out.println("Generic type 1");
         ArrayList<String> genericList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            genericList.add(new String(Integer.toString(i)));
+            genericList.add(Integer.toString(i));
         }
 
         for (String listString : genericList) {
             System.out.println(listString);
         }
 
-        // Usage of generic class
+        // Usage of generic class for different types of objects
         System.out.println("Usage of generic class");
         Box<Integer> box = new Box<>();
         box.setBox(5);
         Integer boxInt = box.getBox();
-        System.out.println(box.getBox());
+        System.out.println(boxInt);
 
-        Box<String> boxString = new Box<String>();
+        Box<String> boxString = new Box<>();
         boxString.setBox("Box String");
         String boxStringBox = boxString.getBox();
         System.out.println(boxStringBox);
 
         // Usage of generic class
         System.out.println("Usage of generic class multiple types");
-        SampleMap <String, Integer> sampleMap;
+        SampleMap<String, Integer> sampleMap;
         sampleMap = new SampleMap<>();
         sampleMap.set("One", 1);
         System.out.println("SampleMap(String, Integer: " + sampleMap.get("One"));
 
-        // Usage of inheritance in generic class
-        System.out.println("Usage of generic class and inheritance of Number base class");
-        NumberClass<Number> numberClass = new NumberClass<>(Integer.valueOf(10));
-        System.out.println("Inherited Integer value of : "+numberClass.getNumber());
-        NumberClass<Number> numberClass1 = new NumberClass<>(Double.valueOf(100.0));
-        System.out.println("Inherited Integer value of : "+numberClass1.getNumber());
 
         // Usage of Unbounded Wildcards in Generics
         System.out.println("Usage of Unbounded Wildcards");
         List<String> stringList = Arrays.asList("One", "Two");
-        List<Integer> integerList = Arrays.asList(3,4);
+        List<Integer> integerList = Arrays.asList(3, 4);
         printUnbounded(stringList);
         printUnbounded(integerList);
 
@@ -73,7 +72,6 @@ public class Main {
 //        baseCarList.add((Car)new Vehicle());  // Will cause runtime CCE
 
 
-
         carList = sportsCarList;
         for (Car car : carList) {
             System.out.println("CarList iteration: " + car.toString());
@@ -85,82 +83,74 @@ public class Main {
 
         // Lower bounded Wildcards
         // A lower bounded wildcard restricts the unknown type to be a specific type or a super type of that type.
-        // ??? Not sure why SportsCar is allowed here??
+        // ??? Not sure why SportsCar is allowed here?? Obviously, Arrays.asList() doesn't know about the
+        // superCarList lower bounding, and assigning to a typed list as shown does not check types in the list.
         List<? super Car> superCarList = Arrays.asList(new Vehicle(), new Car(), new SportsCar("Ferrari"));
 //        superCarList.add(new SportsCar("not allowed"));   // Note: causes runtime Unsupported Operation Exception
 
 
-        for (Object car:  superCarList) {
+        for (Object car : superCarList) {
             System.out.println("superVehicleList iteration: " + car.toString() + " class: " + car.getClass());
         }
 
         // Note: Type Erasure
         // To implement generics, the Java compiler applies type erasure to:
-        // Replace all type parameters in generic types with their bounds or Object if the type parameters are unbounded. The produced bytecode, therefore, contains only ordinary classes, interfaces, and methods.
-        //Insert type casts if necessary to preserve type safety.
-        //Generate bridge methods to preserve polymorphism in extended generic types.
-        //Type erasure ensures that no new classes are created for parameterized types; consequently, generics incur no runtime overhead.
+        // Replace all type parameters in generic types with their bounds or Object if the type parameters are unbounded.
+        // The produced bytecode, therefore, contains only ordinary classes, interfaces, and methods.
+        // Insert type casts if necessary to preserve type safety.
+        // Generate bridge methods to preserve polymorphism in extended generic types.
+        // Type erasure ensures that no new classes are created for parameterized types; consequently, generics incur no
+        // runtime overhead.
 
         // How to use streams to convert a String [] args into a List
-        int [] nums = {1, 2, 3};
+        int[] nums = {1, 2, 3};
         List<Integer> inpList = Arrays.stream(nums).boxed().collect(Collectors.toList());
+        // Alternative:
+        List<Integer> inpList2 = Arrays.asList(1,2,3);
 
-        String [] strings = {"one", "two", "three"};
+        String[] strings = {"one", "two", "three"};
         List<String> strList = Arrays.stream(strings).toList();
+        // Alternative
+        List<String> strList2 = Arrays.asList("one", "two", "three");
     }
 
 
-// Generic inner Class
+    // Generic inner Class
     static class Box<T> {
+        private T boxObject;
 
-    private T boxObject;
-
-    public T getBox() {
-        return boxObject;
+        public T getBox() {
+            return boxObject;
         }
-
-    public void setBox(T input) {
-        boxObject = input;
+        public void setBox(T input) {
+            boxObject = input;
         }
     }
 
     // Generic class multiple type params
-    static class SampleMap<K,V> {
+    static class SampleMap<K, V> {
         private K key;
         private V value;
-        private final HashMap<K,V> map = new HashMap<>();
+        private final HashMap<K, V> map = new HashMap<>();
 
-         public SampleMap() {
-
-        };
-
+        public SampleMap() {
+        }
         public void set(K key, V value) {
             map.put(key, value);
         }
-        public V get(K key){
+        public V get(K key) {
             return map.get(key);
         }
     }
 
-    // Generic class and inheritance
-    static class NumberClass <Number> {
-        private Number aNumber;
-        public NumberClass(Number number) {
-            this.aNumber = number;
-        }
-        public void setNumber(Number number) {
-            this.aNumber = number;
-        }
-        public Number getNumber() {
-            return aNumber;
-        }
-    }
 
     // Generic class and wildcard inheritance examples
     static class Vehicle {
     }
+
     static class Car extends Vehicle {
         String carType = "Unassigned";
+
         @Override
         public String toString() {
             return carType;

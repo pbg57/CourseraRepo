@@ -3,30 +3,28 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SortedSearch {
-    public static int countNumbers(int[] sortedArray, int lessThan) {
-  //      Set <Integer> numberSet = new HashSet<>();
-        List<Integer> intList = Arrays.stream(sortedArray).boxed().collect(Collectors.toList());
+    /*
+    Write a method that accepts non-sorted array of unique integers and returns
+    a count of how many values are less than a given input value. Use sorting
+    to improve search performance.
+     */
+    public static int countNumbers(int[] unSortedArray, int lessThan) {
+        List<Integer> intList = Arrays.stream(unSortedArray).boxed().collect(Collectors.toList());
         int foundLessThan = 0;
 
         // Use a TreeSet, which is an ordered Collection.
         Set<Integer> numberSet = new TreeSet<>(intList);
 
-        // Iterate across ordered collection, while current value is less thatn lessThan.
+        // Iterate across ordered collection, while current value is less than lessThan.
 
         for (Integer intVal : numberSet) {
             if (intVal < lessThan) {
                 foundLessThan++;
+                System.out.println("SortedSearch found: " + intVal);
             } else
+                // End the sorted search, as no more elements are < lessThan
             break;
         }
-//        Iterator<Integer> setIterator = numberSet.iterator();
-//
-//
-//        while (setIterator.hasNext()) {
-//           Integer i = setIterator.next();
-//            if (i < lessThan) {
-//                foundLessThan++;
-//        }
         return foundLessThan;
     }
 
