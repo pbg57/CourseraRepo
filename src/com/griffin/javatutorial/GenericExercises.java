@@ -1,9 +1,6 @@
 package com.griffin.javatutorial;
 
-import javax.swing.*;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -16,7 +13,7 @@ public class GenericExercises {
         ODD, EVEN, PRIME, PALINDROME
     }
 
-    boolean isPrime(Number num) {
+    public static boolean isPrime(Number num) {
         int n = num.intValue();
         for (int i = 2; 2 * i <= n; i++) {
             if (n % i == 0)
@@ -26,26 +23,27 @@ public class GenericExercises {
         return true;
     }
 
-    public boolean isPalindrome(String elem) {
-        StringBuffer string2 = new StringBuffer((String) elem);
-        String elem2 = string2.reverse().toString();
+    /*
+    A palindrome is text that reads the same forward or backwards.
+     */
+    public static boolean isPalindrome(String elem) {
+        StringBuilder string2 = new StringBuilder(elem);
+        String elemReversed = string2.reverse().toString();
 
-        if (elem.equalsIgnoreCase(elem2))
-            return true;
-        else
-            return false;
+        return elem.equalsIgnoreCase(elemReversed);
     }
 
     public <T> int CountElements(Collection<T> elemCollection, Operation operation) {
-
-        // Note; This implementation counts and returns a count for a  specific input operation
+        /*
+        This implementation returns a count for a specific input operation type.
+         */
         int elemCount = 0;
 
         for (T elem : elemCollection) {
 
             switch (operation) {
                 case ODD:
-                    if (elem instanceof Integer) {
+                    if (elem instanceof Integer) {      // Requiring use instanceof not good practice. See soln below.
                         if ((Integer) elem % 2 != 0)
                             elemCount++;
                     }
@@ -97,50 +95,50 @@ public class GenericExercises {
 
         // The second solution requires an input int Collection
         // Note: inner class instantiation syntax
-        results = genericExercises.countElements2(intCollection, genericExercises.new IntegerOdd());
+        results = genericExercises.countElements2(intCollection, new IntegerOdd());
         System.out.println("CountElems2 found " + results + " Odd integers in collection");
 
         Collection<Integer> primeInts = new ArrayList<>();
         Collections.addAll(primeInts, 1,2,3,4,7,9,17, 128, 64, 19);
-        results = genericExercises.countElements2(primeInts, genericExercises.new IntegerPrime());
+        results = genericExercises.countElements2(primeInts, new IntegerPrime());
         System.out.println("CountElems2 found " + results + " Prime integers in collection");
 
-        results = genericExercises.countElements2(stringCollection, genericExercises.new StringPalindrome());
+        results = genericExercises.countElements2(stringCollection, new StringPalindrome());
         System.out.println("CountElems2 found " + results + " Palindromes in collection");
 
     }
 
-    // Different (more correct generic usage) solution implementation below, based on Java tutorial solution:
+    /*
+    Below is a different (more correct generic usage) solution,
+    based on the Java tutorial solution:
+     */
 
+    // A UnaryPredicate asserts a function whose domain is a given set.
     public interface UnaryPredicate<T> {
-        public boolean test(T obj);
+         boolean test(T obj);
     }
 
     // A Class that tests for an Odd Integer
-    public class IntegerOdd implements UnaryPredicate<Integer> {
+    public static class IntegerOdd implements UnaryPredicate<Integer> {
         public boolean test(Integer intObject) {
-            return ((intObject.intValue() % 2) != 0);
+            return ((intObject % 2) != 0);
         }
     }
 
     // A Class that tests for a prime number
-    public class IntegerPrime implements UnaryPredicate<Integer> {
+    public static class IntegerPrime implements UnaryPredicate<Integer> {
         public boolean test(Integer obj) {
             return isPrime(obj);
         }
     }
 
     // A Class that tests for a Palindrome String
-    public class StringPalindrome implements UnaryPredicate<String> {
-        @Override
+    public static class StringPalindrome implements UnaryPredicate<String> {
         public boolean test(String obj) {
-            if (isPalindrome(obj))
-                return true;
-            else
-                return false;
+            return isPalindrome(obj);
         }
     }
-    public <T> int countElements2(Collection<T> elements, UnaryPredicate unaryPredicate) {
+    public <T> int countElements2(Collection<T> elements, UnaryPredicate<T> unaryPredicate) {
         int count = 0;
         for (T obj: elements) {
             if (unaryPredicate.test(obj))
